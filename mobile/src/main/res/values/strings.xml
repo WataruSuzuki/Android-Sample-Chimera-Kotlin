@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">KotlinChimera</string>
     <string name="title_item_detail">Item Detail</string>
+
+    <string-array name="chimera_menu_array">
+        <item>Touch FingerPrint</item>
+    </string-array>
 </resources>

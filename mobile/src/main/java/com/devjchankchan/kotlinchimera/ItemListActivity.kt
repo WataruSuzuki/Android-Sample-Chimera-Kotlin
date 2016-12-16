@@ -14,7 +14,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 
-import com.devjchankchan.kotlinchimera.dummy.DummyContent
+import com.devjchankchan.kotlinchimera.menu.ChimeraMenu
 
 /**
  * An activity representing a list of Items. This activity
@@ -57,10 +57,12 @@ class ItemListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter = SimpleItemRecyclerViewAdapter(DummyContent.ITEMS)
+        val menus = resources.getStringArray(R.array.chimera_menu_array)
+        ChimeraMenu.initItems(menus)
+        recyclerView.adapter = SimpleItemRecyclerViewAdapter(ChimeraMenu.ITEMS)
     }
 
-    inner class SimpleItemRecyclerViewAdapter(private val mValues: List<DummyContent.DummyItem>) : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
+    inner class SimpleItemRecyclerViewAdapter(private val mValues: List<ChimeraMenu.MenuItem>) : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list_content, parent, false)
@@ -69,20 +71,22 @@ class ItemListActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.mItem = mValues[position]
-            holder.mIdView.text = mValues[position].id
+            holder.mIdView.text = "%03d".format(position+1)//mValues[position].id)
             holder.mContentView.text = mValues[position].content
 
             holder.mView.setOnClickListener { v ->
                 if (mTwoPane) {
                     val arguments = Bundle()
-                    arguments.putString(ItemDetailFragment.ARG_ITEM_ID, holder.mItem!!.id)
+                    arguments.putString(ItemDetailFragment.ARG_ITEM_ID, "%d".format(position))
+//                    arguments.putString(ItemDetailFragment.ARG_ITEM_ID, holder.mItem!!.id)
                     val fragment = ItemDetailFragment()
                     fragment.arguments = arguments
                     supportFragmentManager.beginTransaction().replace(R.id.item_detail_container, fragment).commit()
                 } else {
                     val context = v.context
                     val intent = Intent(context, ItemDetailActivity::class.java)
-                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, holder.mItem!!.id)
+                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, "%d".format(position))
+//                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, holder.mItem!!.id)
 
                     context.startActivity(intent)
                 }
@@ -96,7 +100,7 @@ class ItemListActivity : AppCompatActivity() {
         inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
             val mIdView: TextView
             val mContentView: TextView
-            var mItem: DummyContent.DummyItem? = null
+            var mItem: ChimeraMenu.MenuItem? = null
 
             init {
                 mIdView = mView.findViewById(R.id.id) as TextView

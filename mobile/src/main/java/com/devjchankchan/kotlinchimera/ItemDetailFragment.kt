@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-import com.devjchankchan.kotlinchimera.dummy.DummyContent
+import com.devjchankchan.kotlinchimera.menu.ChimeraMenu
 
 /**
  * A fragment representing a single Item detail screen.
@@ -22,7 +22,7 @@ class ItemDetailFragment : Fragment() {
     /**
      * The dummy content this fragment is presenting.
      */
-    private var mItem: DummyContent.DummyItem? = null
+    private var mItem: ChimeraMenu.MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +31,7 @@ class ItemDetailFragment : Fragment() {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP[arguments.getString(ARG_ITEM_ID)]
+            mItem = ChimeraMenu.ITEM_MAP[arguments.getString(ARG_ITEM_ID)]
 
             val activity = this.activity
             val appBarLayout = activity.findViewById(R.id.toolbar_layout) as CollapsingToolbarLayout
